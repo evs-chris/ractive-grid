@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ractive-grid Example</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script type="text/javascript" src="build/build.js"></script>
+    <script type="text/javascript">
+      var Grid = require('ractive-grid');
+
+      var ractive = new Grid({
+        el: 'container',
+        data: {
+          items: [
+            { id: 1, name: 'John', phone: '3138821919' },
+            { id: 2, name: 'Jacob', phone: '3138882719' },
+            { id: 3, name: 'Jingleheimer', phone: '3192821919' },
+            { id: 4, name: 'Schmidt', phone: '1972821919' },
+            { id: 5, name: 'John', phone: '1982736182' }
+          ]
+        }
+      });
+    </script>
+  </body>
+</html>
