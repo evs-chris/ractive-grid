@@ -6,6 +6,7 @@
     "ractivejs/ractive": "*"
   },
   "scripts": ["index.js"],
+  "styles": ["index.css"],
   "main": "index.js",
   "license": "MIT"
 }

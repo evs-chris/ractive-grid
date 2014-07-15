@@ -1,0 +1,56 @@
+.ractive-grid th.header-sort-asc::after,
+.ractive-grid div.rg-header > div.header-sort-asc::after
+{
+  content: '\2191';
+}
+
+.ractive-grid th.header-sort-desc::after,
+.ractive-grid div.rg-header > div.header-sort-desc::after
+{
+  content: '\2193';
+}
+
+.ractive-grid td {
+  padding: 0px 0.5em;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.ractive-grid tbody > tr.current {
+  background-color: rgba(128, 128, 128, 0.3);
+}
+.ractive-grid tr:nth-child(even) {
+  background-color: rgba(128, 128, 128, 0.1);
+}
+
+.ractive-grid div.rg-row > div {
+  float: left;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  padding: 0px 0.5em;
+}
+.ractive-grid div.rg-row::after {
+  content: ' ';
+  display: block;
+  clear: left;
+}
+.ractive-grid div.rg-body > div.rg-row.current {
+  background-color: rgba(128, 128, 128, 0.3);
+}
+.ractive-grid div.rg-row:nth-child(even) {
+  background-color: rgba(128, 128, 128, 0.1);
+}
+
+.ractive-grid div.rg-header > div {
+  font-weight: bold;
+  float: left;
+  padding: 0px 0.5em;
+}
+.ractive-grid div.rg-header::after {
+  content: ' ';
+  display: block;
+  clear: left;
+}
