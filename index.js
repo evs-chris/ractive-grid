@@ -188,7 +188,7 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
         cols = cols.slice(0);
         cols.sort(function(a, b) {
           var ai = a.order || 0;
-          var bi = b.order || 1;
+          var bi = b.order || 0;
           if (ai < bi) return -1;
           else if (ai > bi) return 1;
           else return 0;
@@ -203,12 +203,13 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
       div: ''
     },
     columns: function(arr) {
+      var i;
       if (!!!arr) { // init columns from items
         var item = this.get('items').slice(0).pop();
         var res = [];
         if (!!item) {
           var okTypes = ['String', 'Number', 'Boolean', 'Date'];
-          for (var i in item) {
+          for (i in item) {
             if (item.hasOwnProperty(i) && !!item[i]) {
               var t = item[i].constructor.name;
               if (okTypes.indexOf(t) >= 0) res.push({ label: i, path: i });
@@ -217,9 +218,10 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
         }
         return this.columns(res);
       } else {
+        for (i = 0; i < arr.length; i++) if (!arr[i].hasOwnProperty('order')) arr[i].order = i;
         arr.sort(function(a, b) {
-          var ai = a.order || 100;
-          var bi = b.order || 100;
+          var ai = a.order;
+          var bi = b.order;
           if (ai < bi) return -1;
           else if (ai > bi) return 1;
           else return 0;
