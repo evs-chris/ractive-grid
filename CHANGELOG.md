@@ -1,3 +1,7 @@
+## 0.1.3
+
+* __BUG:__ Fixes more (of the same?) leaky context issues by making sure that certain keypaths are local before a template is installed.
+
 ## 0.1.2
 
 * __BUG:__ Fixes leaky context issues by swtiching to restricted references in templates.
