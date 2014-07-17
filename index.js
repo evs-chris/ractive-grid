@@ -2,23 +2,23 @@ var Ractive = require('ractive');
 
 var templateTable = "<table class='ractive-grid' on-keydown='selection' tabindex='0'|>" +
   "  <thead>" +
-  "    <tr>{{#headers:i}}<th on-click='headerClicked:{{i}}' class='{{#sortDir(i) === 1}}header-sort-asc{{/}}{{#sortDir(i) === 2}}header-sort-desc{{/}}'>{{.}}</th>{{/headers}}</tr>" +
+  "    <tr>{{#.headers:i}}<th on-click='headerClicked:{{i}}' class='{{#.sortDir(i) === 1}}header-sort-asc{{/}}{{#.sortDir(i) === 2}}header-sort-desc{{/}}'>{{.}}</th>{{/}}</tr>" +
   "  </thead>" +
   "  <tbody>" +
-  "    {{#rendered}}" +
-  "      {{#itemsView:i}}" +
-  "        <tr on-click='rowClicked:{{i}}' on-dblclick='rowDoubleClicked:{{i}}' class='{{#isCurrentRow(i)}}current{{/}}'>{{>tableRow}}</tr>" +
-  "      {{/items}}" +
-  "    {{/rendered}}" +
+  "    {{#.rendered}}" +
+  "      {{#.itemsView:i}}" +
+  "        <tr on-click='rowClicked:{{i}}' on-dblclick='rowDoubleClicked:{{i}}' class='{{#.isCurrentRow(i)}}current{{/}}'>{{>tableRow}}</tr>" +
+  "      {{/}}" +
+  "    {{/}}" +
   "  </tbody>" +
   "</table>";
 
 var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'|>" +
-  "  <div class='rg-header'>{{#headers:i}}<div on-click='headerClicked:{{i}}' class='{{#sortDir(i) === 1}}header-sort-asc{{/}}{{#sortDir(i) === 2}}header-sort-desc{{/}} {{columnClass(i)}}'>{{.}}</div>{{/headers}}</div>" +
+  "  <div class='rg-header'>{{#.headers:i}}<div on-click='headerClicked:{{i}}' class='{{#.sortDir(i) === 1}}header-sort-asc{{/}}{{#.sortDir(i) === 2}}header-sort-desc{{/}} {{.columnClass(i)}}'>{{.}}</div>{{/}}</div>" +
   "  <div class='rg-body'>" +
-  "    {{#rendered}}" +
-  "      {{#itemsView:i}}" +
-  "        <div class='rg-row{{#isCurrentRow(i)}} current{{/}}' on-dblclick='rowDoubleClicked:{{i}}' on-click='rowClicked:{{i}}' >{{>divRow}}</div>" +
+  "    {{#.rendered}}" +
+  "      {{#.itemsView:i}}" +
+  "        <div class='rg-row{{#.isCurrentRow(i)}} current{{/}}' on-dblclick='rowDoubleClicked:{{i}}' on-click='rowClicked:{{i}}' >{{>divRow}}</div>" +
   "      {{/}}" +
   "    {{/}}" +
   "  </div>" +
@@ -37,7 +37,7 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
 
   var Grid;
   Grid = Ractive.extend({
-    template: '{{#table}}{{>table}}{{/}}{{^table}}{{>div}}{{/}}',
+    template: '{{#.table}}{{>table}}{{/}}{{^.table}}{{>div}}{{/}}',
     beforeInit: function(opts) {
       var transfer = ['class', 'style', 'id'];
       var str = '';
@@ -113,8 +113,7 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
         return this.get('currentIndex') === idx;
       },
       editingRows: [],
-      columns: [],
-      sorts: {order: []},
+      sorts: { order: [] },
       sortable: true,
       multisortable: true,
       table: true
@@ -229,8 +228,8 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
         this.set('_columns', arr);
         var tstr = '', dstr = '';
         for (var c = 0; c < arr.length; c++) {
-          tstr += '<td on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{columnClass(i)}}\'>{{' + arr[c].path + '}}</td>';
-          dstr += '<div on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{columnClass(i)}}\'>{{' + arr[c].path + '}}</div>';
+          tstr += '<td on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{.columnClass(i)}}\'>{{.' + arr[c].path + '}}</td>';
+          dstr += '<div on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{.columnClass(i)}}\'>{{.' + arr[c].path + '}}</div>';
         }
         this.partials.tableRow = tstr;
         this.partials.divRow = dstr;
