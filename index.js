@@ -113,6 +113,10 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
         return this.get('currentIndex') === idx;
       },
       editingRows: [],
+      _columns: undefined,
+      _filter: undefined,
+      items: undefined,
+      currentIndex: undefined,
       sorts: { order: [] },
       sortable: true,
       multisortable: true,
