@@ -1,3 +1,7 @@
+## 0.1.2
+
+* __BUG:__ Fixes leaky context issues by swtiching to restricted references in templates.
+
 ## 0.1.1
 
 * __BUG:__ Fixes column ordering in weirdo environments wherein sort functions are passed arguments in reverse. Here's lookin' at you IE and Safari.
