@@ -1,3 +1,8 @@
+## 0.1.5
+
+* __BUG:__ Avoids throwing exceptions due to missing data while the grid is initializing.
+* __BUG:__ Fixes column class references.
+
 ## 0.1.4
 
 * __BUG:__ Fixes issue with tracking current caused by attempts to fix issues with leaky context.
