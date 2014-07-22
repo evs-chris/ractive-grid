@@ -188,6 +188,7 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
       columns: function() {
         var cols = this.get('_columns');
         if (cols === undefined) cols = this.columns();
+        if (cols === undefined) return [];
         cols = cols.slice(0);
         cols.sort(function(a, b) {
           var ai = a.order || 0;
@@ -208,7 +209,9 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
     columns: function(arr) {
       var i;
       if (!!!arr) { // init columns from items
-        var item = this.get('items').slice(0).pop();
+        var items = this.get('items');
+        if (!!!items) return [];
+        var item = items.slice(0).pop();
         var res = [];
         if (!!item) {
           var okTypes = ['String', 'Number', 'Boolean', 'Date'];
@@ -232,8 +235,8 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
         this.set('_columns', arr);
         var tstr = '', dstr = '';
         for (var c = 0; c < arr.length; c++) {
-          tstr += '<td on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{.columnClass(i)}}\'>{{.' + arr[c].path + '}}</td>';
-          dstr += '<div on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{.columnClass(i)}}\'>{{.' + arr[c].path + '}}</div>';
+          tstr += '<td on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{columnClass(i)}}\'>{{.' + arr[c].path + '}}</td>';
+          dstr += '<div on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{columnClass(i)}}\'>{{.' + arr[c].path + '}}</div>';
         }
         this.partials.tableRow = tstr;
         this.partials.divRow = dstr;
