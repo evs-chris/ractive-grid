@@ -1,3 +1,8 @@
+## 0.2.0
+
+* __BUG:__ Fixes sort-related context leak.
+* Adds a helper for controlling grid selection from an external (likely filter) input field.
+
 ## 0.1.5
 
 * __BUG:__ Avoids throwing exceptions due to missing data while the grid is initializing.
