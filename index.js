@@ -269,6 +269,28 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
     filter: function(fn) {
       this.set('_filter', fn);
       this.update('itemsView');
+    },
+    filterInputControl: function() {
+      var grid = this;
+      return function(e) {
+        var k = e.original.keyCode;
+        if (k === 13) {
+          var cur = grid.get('current');
+          if (!!cur) {
+            grid.fire('rowSelected', cur, null, null);
+            e.original.preventDefault();
+            return;
+          }
+        }
+        if (k === 38 || k === 40) {
+          e.original.preventDefault();
+          var current = grid.get('currentIndex');
+          if (typeof current !== 'number') current = k === 38 ? grid.get('itemsView').length - 1 : 0;
+          else current = k == 38 ? current - 1 : current + 1;
+          grid.current(current);
+          return;
+        }
+      };
     }
   });
 
