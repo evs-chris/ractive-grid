@@ -44,6 +44,7 @@ var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'
       for (var k in opts.data) if (transfer.indexOf(k) >= 0) str += ' ' + k + '="' + opts.data[k] + '"';
       opts.partials.table = templateTable.replace(/\|/, str);
       opts.partials.div = templateDiv.replace(/\|/, str);
+      opts.data.sorts = { order: [] };
     },
     init: function() {
       var grid = this;
