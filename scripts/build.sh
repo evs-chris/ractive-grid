@@ -24,7 +24,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 # no longer needed stuff
-ls | grep -v build | while read file; do rm -r "$file"; done
+ls | grep -v build | grep -v node_modules | while read file; do rm -r "$file"; done
 
 cp -r build/* ./
 rm -r build
