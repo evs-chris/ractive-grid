@@ -1,0 +1,8 @@
+{
+  "name": "ractive-grid",
+  "private": true,
+  "devDependencies": {
+    "gobble": "^0",
+    "sander": "^0"
+  }
+}

@@ -1,3 +1,8 @@
+## 0.3.0
+
+* Switches to ES6 via gobble and adds giblets support.
+* __BUG:__ Fixes issue with setting column classes and adds support for specifying column info as a mapping.
+
 ## 0.2.0
 
 * __BUG:__ Fixes sort-related context leak.
@@ -18,7 +23,7 @@
 
 ## 0.1.2
 
-* __BUG:__ Fixes leaky context issues by swtiching to restricted references in templates.
+* __BUG:__ Fixes leaky context issues by switching to restricted references in templates.
 
 ## 0.1.1
 
