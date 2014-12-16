@@ -1,0 +1,8 @@
+{
+  "name": "ractive-grid",
+  "type": "umd",
+  "version": "0.3.0",
+  "versions": [ "0.3.0" ],
+  "scripts": [ { "file": "ractive-grid.js", "target": "index.js" } ],
+  "styles": [ "assets/index.css" ]
+}

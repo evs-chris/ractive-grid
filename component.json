@@ -1,0 +1,13 @@
+{
+  "name": "ractive-grid",
+  "repository": "evs-chris/ractive-grid",
+  "description": "Plain old table wrapped in ractive for reactivity.",
+  "version": "0.3.0",
+  "dependencies": {
+    "ractivejs/ractive": "*"
+  },
+  "scripts": ["component/index.js"],
+  "styles": ["assets/index.css"],
+  "main": "component/index.js",
+  "license": "MIT"
+}
