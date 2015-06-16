@@ -1,0 +1,25 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/chris/opt/iojs-v2.0.1-linux-x64/bin/iojs',
+1 verbose cli   '/home/chris/bin/npm',
+1 verbose cli   'run-script',
+1 verbose cli   'build' ]
+2 info using npm@2.9.0
+3 info using node@v2.0.1
+4 verbose stack Error: missing script: build
+4 verbose stack     at run (/home/chris/opt/iojs-v2.0.1-linux-x64/lib/node_modules/npm/lib/run-script.js:165:19)
+4 verbose stack     at /home/chris/opt/iojs-v2.0.1-linux-x64/lib/node_modules/npm/lib/run-script.js:81:5
+4 verbose stack     at /home/chris/opt/iojs-v2.0.1-linux-x64/lib/node_modules/npm/node_modules/read-package-json/read-json.js:345:5
+4 verbose stack     at checkBinReferences_ (/home/chris/opt/iojs-v2.0.1-linux-x64/lib/node_modules/npm/node_modules/read-package-json/read-json.js:309:45)
+4 verbose stack     at final (/home/chris/opt/iojs-v2.0.1-linux-x64/lib/node_modules/npm/node_modules/read-package-json/read-json.js:343:3)
+4 verbose stack     at then (/home/chris/opt/iojs-v2.0.1-linux-x64/lib/node_modules/npm/node_modules/read-package-json/read-json.js:113:5)
+4 verbose stack     at /home/chris/opt/iojs-v2.0.1-linux-x64/lib/node_modules/npm/node_modules/read-package-json/read-json.js:300:12
+4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (evalmachine.<anonymous>:382:3)
+5 verbose cwd /home/chris/development/js/ractive-grid
+6 error Linux 4.0.1-x86_64-linode55
+7 error argv "/home/chris/opt/iojs-v2.0.1-linux-x64/bin/iojs" "/home/chris/bin/npm" "run-script" "build"
+8 error node v2.0.1
+9 error npm  v2.9.0
+10 error missing script: build
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]
