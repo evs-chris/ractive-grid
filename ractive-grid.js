@@ -1,54 +1,43 @@
 (function (global, factory) {
-
-  'use strict';
-
-  if (typeof define === 'function' && define.amd) {
-    // export as AMD
-    define(['exports'], factory);
-  } else if (typeof module !== 'undefined' && module.exports && typeof require === 'function') {
-    // node/browserify
-    factory(exports);
-  } else {
-    // browser global
-    global.RactiveGrid = {};
-    factory(global.RactiveGrid);
-  }
-
-}(typeof window !== 'undefined' ? window : this, function (exports) {
-
-  'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  factory((global.RactiveGrid = {}))
+}(this, function (exports) { 'use strict';
 
   "use strict";
 
   /* global Ractive */
 
-  var index__templateTable = "<table class='ractive-grid' on-keydown='selection' tabindex='0'|>\n  <thead>\n    <tr>{{#.headers:i}}<th on-click='headerClicked:{{i}}' class='{{#(sortDir(i) === 1)}}header-sort-asc{{/}}{{#(sortDir(i) === 2)}}header-sort-desc{{/}}'>{{.}}</th>{{/}}</tr>\n  </thead>\n  <tbody>\n    {{#.rendered}}\n      {{#.itemsView:i}}\n        <tr on-click='rowClicked:{{i}}' on-dblclick='rowDoubleClicked:{{i}}' class='{{#isCurrentRow(i)}}current{{/}}'>{{>tableRow}}</tr>\n      {{/}}\n    {{/}}\n  </tbody>\n</table>";
+  var templateTable = "<table class='ractive-grid' on-keydown='selection' tabindex='0'|>\n  <thead>\n    <tr>{{#.headers:i}}<th on-click='headerClicked:{{i}}' class='{{#(sortDir(i) === 1)}}header-sort-asc{{/}}{{#(sortDir(i) === 2)}}header-sort-desc{{/}}'>{{.}}</th>{{/}}</tr>\n  </thead>\n  <tbody>\n    {{#.rendered}}\n      {{#.itemsView:i}}\n        <tr on-click='rowClicked:{{i}}' on-dblclick='rowDoubleClicked:{{i}}' class='{{#isCurrentRow(i)}}current{{/}}'>{{>tableRow}}</tr>\n      {{/}}\n    {{/}}\n  </tbody>\n</table>";
 
-  var index__templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'|>\n  <div class='rg-header'>{{#.headers:i}}<div on-click='headerClicked:{{i}}' class='{{#(sortDir(i) === 1)}}header-sort-asc{{/}}{{#(sortDir(i) === 2)}}header-sort-desc{{/}} {{columnClass(i)}}'>{{.}}</div>{{/}}</div>\n  <div class='rg-body'>\n    {{#.rendered}}\n      {{#.itemsView:i}}\n        <div class='rg-row{{#isCurrentRow(i)}} current{{/}}' on-dblclick='rowDoubleClicked:{{i}}' on-click='rowClicked:{{i}}' >{{>divRow}}</div>\n      {{/}}\n    {{/}}\n  </div>\n</div>";
-  var index__getProp = function index__getProp(obj, path) {
-    var parts = path.split(".");
+  var templateDiv = "<div class='ractive-grid' on-keydown='selection' tabindex='0'|>\n  <div class='rg-header'>{{#.headers:i}}<div on-click='headerClicked:{{i}}' class='{{#(sortDir(i) === 1)}}header-sort-asc{{/}}{{#(sortDir(i) === 2)}}header-sort-desc{{/}} {{columnClass(i)}}'>{{.}}</div>{{/}}</div>\n  <div class='rg-body'>\n    {{#.rendered}}\n      {{#.itemsView:i}}\n        <div class='rg-row{{#isCurrentRow(i)}} current{{/}}' on-dblclick='rowDoubleClicked:{{i}}' on-click='rowClicked:{{i}}' >{{>divRow}}</div>\n      {{/}}\n    {{/}}\n  </div>\n</div>";
+  var index__getProp = function getProp(obj, path) {
+    if (!path) {
+      return "";
+    }var parts = path.split(".");
     for (var i = 0; i < parts.length; i++) {
-      if (!!!obj) return obj;
-      var p = parts[i];
+      if (!!!obj) {
+        return obj;
+      }var p = parts[i];
       obj = obj[p];
     }
     return obj;
   };
 
-  var index__Grid;
-  index__Grid = Ractive.extend({
+  var Grid;
+  Grid = Ractive.extend({
     template: "{{>.type}}",
-    onconstruct: function (opts) {
+    onconstruct: function onconstruct(opts) {
       var transfer = ["class", "style", "id"];
       var str = "";
       for (var k in opts.data) if (transfer.indexOf(k) >= 0) str += " " + k + "=\"" + opts.data[k] + "\"";
       opts.partials = {};
-      opts.partials.table = index__templateTable.replace(/\|/, str);
-      opts.partials.div = index__templateDiv.replace(/\|/, str);
+      opts.partials.table = templateTable.replace(/\|/, str);
+      opts.partials.div = templateDiv.replace(/\|/, str);
       opts.data.sorts = { order: [] };
       opts.data.type = opts.data.type || "table";
     },
-    onrender: function () {
+    onrender: function onrender() {
       var grid = this;
       grid.on("rowDoubleClicked", function (e, i) {
         grid.fire("rowSelected", grid.get("itemsView." + i), i, e);
@@ -95,32 +84,34 @@
         }
       });
     },
-    data: {
-      rendered: false,
-      editingRow: function (idx) {
-        return (this.get("editingRows") || []).indexOf(idx) >= 0;
-      },
-      sortDir: function (idx) {
-        return this.get("sorts")[idx];
-      },
-      columnClass: function (idx) {
-        return ((this.get("_columns") || [])[idx] || {})["class"];
-      },
-      isCurrentRow: function (idx) {
-        return this.get("currentIndex") === idx;
-      },
-      editingRows: [],
-      _columns: undefined,
-      _filter: undefined,
-      items: undefined,
-      currentIndex: undefined,
-      sorts: { order: [] },
-      sortable: true,
-      multisortable: true,
-      table: true
+    data: function data() {
+      return {
+        rendered: false,
+        editingRow: function editingRow(idx) {
+          return (this.get("editingRows") || []).indexOf(idx) >= 0;
+        },
+        sortDir: function sortDir(idx) {
+          return this.get("sorts")[idx];
+        },
+        columnClass: function columnClass(idx) {
+          return ((this.get("_columns") || [])[idx] || {})["class"];
+        },
+        isCurrentRow: function isCurrentRow(idx) {
+          return this.get("currentIndex") === idx;
+        },
+        editingRows: [],
+        _columns: undefined,
+        _filter: undefined,
+        items: undefined,
+        currentIndex: undefined,
+        sorts: { order: [] },
+        sortable: true,
+        multisortable: true,
+        table: true
+      };
     },
     computed: {
-      itemsView: function () {
+      itemsView: function itemsView() {
         var grd = this;
         this.get("sorts");
         var filter = this.get("_filter");
@@ -151,13 +142,14 @@
         });
         return items;
       },
-      current: function () {
+      current: function current() {
         var items = this.get("itemsView");
         var idx = this.get("currentIndex");
-        if (typeof idx !== "number") return null;
-        return (items || [])[idx];
+        if (typeof idx !== "number") {
+          return null;
+        }return (items || [])[idx];
       },
-      sorting: function () {
+      sorting: function sorting() {
         var res = [];
         var sorts = this.get("sorts");
         var orders = sorts.order || [];
@@ -166,7 +158,7 @@
         }
         return res;
       },
-      headers: function () {
+      headers: function headers() {
         var cols = this.get("columnsView");
         var res = [];
         for (var i in cols) {
@@ -178,11 +170,12 @@
         }
         return res;
       },
-      columnsView: function () {
+      columnsView: function columnsView() {
         var cols = this.get("_columns");
         if (cols === undefined) cols = this.columns(this.get("columns"));
-        if (cols === undefined) return [];
-        cols = cols.slice(0);
+        if (cols === undefined) {
+          return [];
+        }cols = cols.slice(0);
         cols.sort(function (a, b) {
           var ai = a.order || 0;
           var bi = b.order || 0;
@@ -197,13 +190,14 @@
       table: "",
       div: ""
     },
-    columns: function (arr) {
+    columns: function columns(arr) {
       var i;
-      if (!!!arr) {
+      if (!arr) {
         // init columns from items
         var items = this.get("items");
-        if (!!!items) return [];
-        var item = items.slice(0).pop();
+        if (!!!items) {
+          return [];
+        }var item = items.slice(0).pop();
         var res = [];
         if (!!item) {
           var okTypes = ["String", "Number", "Boolean", "Date"];
@@ -223,10 +217,27 @@
           if (ai < bi) return -1;else if (ai > bi) return 1;else return 0;
         });
         this.set("_columns", arr);
-        var tstr = "", dstr = "";
+        var tstr = "",
+            dstr = "";
         for (var c = 0; c < arr.length; c++) {
-          tstr += "<td on-dblclick='colDoubleClicked:[{{i}}," + c + "]' class='{{columnClass(" + c + ")}}'>{{" + arr[c].path + "}}</td>";
-          dstr += "<div on-dblclick='colDoubleClicked:[{{i}}," + c + "]' class='{{columnClass(" + c + ")}}'>{{" + arr[c].path + "}}</div>";
+          tstr += "<td on-dblclick='colDoubleClicked:[{{i}}," + c + "]' class='{{columnClass(" + c + ")}}'>";
+          dstr += "<div on-dblclick='colDoubleClicked:[{{i}}," + c + "]' class='{{columnClass(" + c + ")}}'>";
+          if (arr[c].type === "button" || arr[c].buttons) {
+            if (arr[c].buttons && Object.prototype.toString.call(arr[c].buttons) === "[object Array]") {
+              for (var b = 0; b < arr[c].buttons.length; b++) {
+                tstr += "<button " + (arr[c].buttons[b]["class"] ? "class=\"" + arr[c].buttons[b]["class"] + "\"" : "") + " on-click=\"clickButton(i, " + c + ", " + b + ")\">" + (arr[c].buttons[b].label || arr[c].label) + "</button>";
+                dstr += "<button " + (arr[c].buttons[b]["class"] ? "class=\"" + arr[c].buttons[b]["class"] + "\"" : "") + " on-click=\"clickButton(i, " + c + ", " + b + ")\">" + (arr[c].buttons[b].label || arr[c].label) + "</button>";
+              }
+            } else {
+              tstr += "<button " + (arr[c].buttonClass ? "class=\"" + arr[c].buttonClass + "\"" : "") + " on-click=\"clickButton(i, " + c + ")\">" + (arr[c].buttonLabel || arr[c].label) + "</button>";
+              dstr += "<button " + (arr[c].buttonClass ? "class=\"" + arr[c].buttonClass + "\"" : "") + " on-click=\"clickButton(i, " + c + ")\">" + (arr[c].buttonLabel || arr[c].label) + "</button>";
+            }
+          } else {
+            tstr += "{{" + arr[c].path + "}}";
+            dstr += "{{" + arr[c].path + "}}";
+          }
+          tstr += "</td>";
+          dstr += "</div>";
         }
         this.partials.tableRow = tstr;
         this.partials.divRow = dstr;
@@ -235,11 +246,13 @@
         return arr;
       }
     },
-    current: function (idx) {
-      if (arguments.length === 0) return this.get("current")();
-      var items = this.get("itemsView");
-      if (idx < 0 || idx >= items.length) return;
-      this.set("currentIndex", idx);
+    current: function current(idx) {
+      if (arguments.length === 0) {
+        return this.get("current")();
+      }var items = this.get("itemsView");
+      if (idx < 0 || idx >= items.length) {
+        return;
+      }this.set("currentIndex", idx);
       var tbl = this.get("table");
 
       var n, p;
@@ -251,13 +264,13 @@
         if (n.style.overflow !== "") p = n;else p = this.el;
       }
 
-      if (n.offsetTop < p.scrollTop) p.scrollTop = n.offsetTop;else if (n.offsetTop > p.scrollTop + p.clientHeight) p.scrollTop = (n.offsetTop - p.clientHeight / 2);
+      if (n.offsetTop < p.scrollTop) p.scrollTop = n.offsetTop;else if (n.offsetTop > p.scrollTop + p.clientHeight) p.scrollTop = n.offsetTop - p.clientHeight / 2;
     },
-    filter: function (fn) {
+    filter: function filter(fn) {
       this.set("_filter", fn);
       this.update("itemsView");
     },
-    filterInputControl: function () {
+    filterInputControl: function filterInputControl() {
       var grid = this;
       return function (e) {
         var k = e.original.keyCode;
@@ -277,13 +290,21 @@
           return;
         }
       };
+    },
+    clickButton: function clickButton(rown, coln, btnn) {
+      var col = this.get("_columns." + coln),
+          row = this.get("itemsView." + rown);
+      if (col.buttons && col.buttons[btnn]) {
+        return col.buttons[btnn].action.call(this, row, rown, coln, btnn, col.buttons[btnn]);
+      } else {
+        return col.action.call(this, row, rown, coln);
+      }
     }
   });
 
-  var index__default = index__Grid;
-  //# sourceMappingURL=05-_6to5-index.js.map
+  var index = Grid;
 
-  exports.default = index__default;
+  exports['default'] = index;
 
 }));
-//# sourceMappingURL=./ractive-grid.js.map
+//# sourceMappingURL=ractive-grid.js.map

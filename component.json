@@ -2,7 +2,7 @@
   "name": "ractive-grid",
   "repository": "evs-chris/ractive-grid",
   "description": "Plain old table wrapped in ractive for reactivity.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "dependencies": {
     "ractivejs/ractive": "*"
   },
