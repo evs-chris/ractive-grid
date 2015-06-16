@@ -3,3 +3,4 @@ components/
 .gobble*/
 .giblets/
 node_modules/
+*.log
