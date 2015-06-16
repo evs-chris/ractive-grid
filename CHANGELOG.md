@@ -1,3 +1,8 @@
+## 0.4.0
+
+* Adds support for button columns.
+* Cleans up some Ractive migration warnings.
+
 ## 0.3.0
 
 * Switches to ES6 via gobble and adds giblets support.

@@ -20,7 +20,7 @@ Include the grid as a Ractive component and then add a component reference to it
 <Grid items="{{myGridItems}}" />
 ```
 
-By default, Grid will name your columns based on the keys of the objects in your items list. You can also supply a `columns` array containing objects with `label`, `path`, `class`, and `order` keys that specify the content of your grid columns and their header labels.
+By default, Grid will name your columns based on the keys of the objects in your items list. You can also supply a `columns` array containing objects with `label`, `path`, `class`, and `order` keys that specify the content of your grid columns and their header labels. You can also create button fields with a `{ type: 'button', action: function(item) { ... }, buttonLabel: 'Foo?', buttonClass: 'bar' }` single button or `{ buttons: [{ label: 'Foo?', class: 'bar', action: function(row, rowNum, colNum, btnNum, btn) { ... } }] }` multiple buttons.
 
 Grid makes columns sortable by default. Clicking on a column header will toggle sorting for that column, and clicking again will switch the sort direction. Clicking a third time will remove any sorting. Multiple columns can participate in a sort if their headers are clicked while the `CTRL` key is held down.
 
