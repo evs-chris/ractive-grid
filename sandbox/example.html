@@ -5,6 +5,12 @@
     <link rel="stylesheet" type="text/css" href="/assets/index.css" />
     <style>
       .highlight { background-color: lightyellow; }
+      .alt-button {
+        background: none;
+        border: none;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px lightblue;
+      }
     </style>
   </head>
   <body>
@@ -28,7 +34,9 @@
           ],
           complex: [
             { label: 'Id', path: 'id + 1', order: 1 },
-            { label: 'Name', path: 'name', order: 0, class: 'highlight' }
+            { label: 'Name', path: 'name', order: 0, class: 'highlight' },
+            { label: 'Actions', buttons: [{ label: 'Phone', action: function(row) { alert(row.phone); console.log(arguments); } }] },
+            { label: 'Alt Action', type: 'button', buttonLabel: 'Phone', action: function(row) { alert(row.name + ' ' + row.phone); }, buttonClass: 'alt-button' }
           ]
         }
       });

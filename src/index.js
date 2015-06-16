@@ -24,6 +24,7 @@ var templateDiv = `<div class='ractive-grid' on-keydown='selection' tabindex='0'
   </div>
 </div>`;
 var getProp = function getProp(obj, path) {
+  if (!path) return '';
   var parts = path.split('.');
   for (var i = 0; i < parts.length; i++) {
     if (!!!obj) return obj;
@@ -99,29 +100,31 @@ Grid = Ractive.extend({
       }
     });
   },
-  data: {
-    rendered: false,
-    editingRow(idx) {
-      return (this.get('editingRows') || []).indexOf(idx) >= 0;
-    },
-    sortDir(idx) {
-      return this.get('sorts')[idx];
-    },
-    columnClass(idx) {
-      return ((this.get('_columns') || [])[idx] || {}).class;
-    },
-    isCurrentRow(idx) {
-      return this.get('currentIndex') === idx;
-    },
-    editingRows: [],
-    _columns: undefined,
-    _filter: undefined,
-    items: undefined,
-    currentIndex: undefined,
-    sorts: { order: [] },
-    sortable: true,
-    multisortable: true,
-    table: true
+  data() {
+    return {
+      rendered: false,
+      editingRow(idx) {
+        return (this.get('editingRows') || []).indexOf(idx) >= 0;
+      },
+      sortDir(idx) {
+        return this.get('sorts')[idx];
+      },
+      columnClass(idx) {
+        return ((this.get('_columns') || [])[idx] || {}).class;
+      },
+      isCurrentRow(idx) {
+        return this.get('currentIndex') === idx;
+      },
+      editingRows: [],
+      _columns: undefined,
+      _filter: undefined,
+      items: undefined,
+      currentIndex: undefined,
+      sorts: { order: [] },
+      sortable: true,
+      multisortable: true,
+      table: true
+    };
   },
   computed: {
     itemsView() {
@@ -209,7 +212,7 @@ Grid = Ractive.extend({
   },
   columns(arr) {
     var i;
-    if (!!!arr) { // init columns from items
+    if (!arr) { // init columns from items
       var items = this.get('items');
       if (!!!items) return [];
       var item = items.slice(0).pop();
@@ -236,8 +239,24 @@ Grid = Ractive.extend({
       this.set('_columns', arr);
       var tstr = '', dstr = '';
       for (var c = 0; c < arr.length; c++) {
-        tstr += '<td on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{columnClass(' + c + ')}}\'>{{' + arr[c].path + '}}</td>';
-        dstr += '<div on-dblclick=\'colDoubleClicked:[{{i}},' + c + ']\' class=\'{{columnClass(' + c + ')}}\'>{{' + arr[c].path + '}}</div>';
+        tstr += `<td on-dblclick='colDoubleClicked:[{{i}},${c}]' class='{{columnClass(${c})}}'>`;
+        dstr += `<div on-dblclick='colDoubleClicked:[{{i}},${c}]' class='{{columnClass(${c})}}'>`;
+        if (arr[c].type === 'button' || arr[c].buttons) {
+          if (arr[c].buttons && Object.prototype.toString.call(arr[c].buttons) === '[object Array]') {
+            for (let b = 0; b < arr[c].buttons.length; b++) {
+              tstr += `<button ${arr[c].buttons[b].class ? `class="${arr[c].buttons[b].class}"` : ""} on-click="clickButton(i, ${c}, ${b})">${arr[c].buttons[b].label || arr[c].label}</button>`;
+              dstr += `<button ${arr[c].buttons[b].class ? `class="${arr[c].buttons[b].class}"` : ""} on-click="clickButton(i, ${c}, ${b})">${arr[c].buttons[b].label || arr[c].label}</button>`;
+            }
+          } else {
+            tstr += `<button ${arr[c].buttonClass ? `class="${arr[c].buttonClass}"` : ""} on-click="clickButton(i, ${c})">${arr[c].buttonLabel || arr[c].label}</button>`;
+            dstr += `<button ${arr[c].buttonClass ? `class="${arr[c].buttonClass}"` : ""} on-click="clickButton(i, ${c})">${arr[c].buttonLabel || arr[c].label}</button>`;
+          }
+        } else {
+          tstr += `{{${arr[c].path}}}`;
+          dstr += `{{${arr[c].path}}}`;
+        }
+        tstr += '</td>';
+        dstr += '</div>';
       }
       this.partials.tableRow = tstr;
       this.partials.divRow = dstr;
@@ -291,6 +310,14 @@ Grid = Ractive.extend({
         return;
       }
     };
+  },
+  clickButton(rown, coln, btnn) {
+    let col = this.get(`_columns.${coln}`), row = this.get(`itemsView.${rown}`);
+    if (col.buttons && col.buttons[btnn]) {
+      return col.buttons[btnn].action.call(this, row, rown, coln, btnn, col.buttons[btnn]);
+    } else {
+      return col.action.call(this, row, rown, coln);
+    }
   }
 });
 
